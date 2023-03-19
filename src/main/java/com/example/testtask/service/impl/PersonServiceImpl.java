@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class PersonServiceImpl implements PersonService {
@@ -30,6 +31,10 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public Person getPersonById(Long id) {
-        return null;
+        Optional<Person> personOptional = personRepository.findById(id);
+        if (personOptional.isEmpty()) {
+            throw new NoSuchElementException("Person with id " + id + " not found");
+        }
+        return personOptional.get();
     }
 }
