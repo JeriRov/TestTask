@@ -1,15 +1,31 @@
 package com.example.testtask.service.impl;
 
 import com.example.testtask.entity.Person;
+import com.example.testtask.repository.PersonRepository;
 import com.example.testtask.service.PersonService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.NoSuchElementException;
+
 @Service
 public class PersonServiceImpl implements PersonService {
+    private final PersonRepository personRepository;
 
-    @Override
+    public PersonServiceImpl(PersonRepository personRepository) {
+        this.personRepository = personRepository;
+    }
+
     public int getAgeById(Long id) {
-        return 0;
+        Person person = personRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Person with id " + id + " not found"));
+
+        LocalDate dateOfBirth = person.getDateOfBirth();
+        LocalDate currentDate = LocalDate.now();
+        Period period = Period.between(dateOfBirth, currentDate);
+
+        return period.getYears();
     }
 
     @Override
