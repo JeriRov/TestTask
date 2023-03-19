@@ -1,0 +1,1 @@
+INSERT INTO person (id, first_name, last_name, date_of_birth) VALUES (1 ,'John', 'Doe', '1990-01-01');
